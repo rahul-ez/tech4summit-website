@@ -43,7 +43,10 @@ next-env.d.ts
 # claude code local tooling (personal, not shared with the team)
 /.claude/
 
-# impeccable local session/cache state (design.json itself IS committed —
-# it's a real deliverable, the DESIGN.md sidecar)
-/.impeccable/hook.cache.json
-/.impeccable/live/
+# Impeccable skill output — local-only. A teammate's AI agent could read
+# these without knowing they're subordinate to context/ui-tokens.md,
+# context/ui-rules.md, and context/ui-registry.md, which remain the
+# actual shared source of truth for this project.
+/.impeccable/
+/PRODUCT.md
+/DESIGN.md
