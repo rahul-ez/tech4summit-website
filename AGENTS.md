@@ -7,69 +7,90 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+# AGENTS.md
 
-# Tech4Bharat 2026 — Agent Instructions
+## Project
 
-## Context Authority
+Tech4Bharat 2026 website.
 
-The `context/` directory is the authoritative source of project requirements and implementation guidance.
+All developers and AI agents use the same `context/` files. Treat them as the shared source of truth.
 
-Use each file according to its responsibility:
+## Before Working
 
-* `project-overview.md` — product scope, goals, and confirmed requirements
-* `tbd.md` — unresolved decisions; never invent answers
-* `architecture.md` — technical architecture, structure, and boundaries
-* `ui-tokens.md` — visual design tokens and styling foundations
-* `ui-rules.md` — UI composition, layout, and interaction rules
-* `ui-registry.md` — reusable component catalogue
-* `code-standards.md` — implementation and coding standards
-* `library-docs.md` — approved libraries and usage guidance
-* `build-plan.md` — implementation phases and sequencing
-* `progress-tracker.md` — current implementation status and progress
+1. Read `context/progress-tracker.md`.
+2. Check your task's phase in `context/build-plan.md`.
+3. Check `context/tbd.md` for anything affecting your task.
+4. Read the relevant context files.
+5. Inspect existing code before making changes.
 
-## Source Precedence
+## Context Rules
 
-When documents overlap, use this order:
+Each file has a specific responsibility:
 
-1. `project-overview.md`
-2. `tbd.md`
-3. `architecture.md`
-4. `ui-tokens.md`
-5. `ui-rules.md`
-6. `ui-registry.md`
-7. `code-standards.md`
-8. `library-docs.md`
-9. `build-plan.md`
-10. `progress-tracker.md`
+* `architecture.md` → architecture and boundaries
+* `ui-tokens.md` → visual tokens
+* `ui-rules.md` → UI composition
+* `ui-registry.md` → reusable components
+* `code-standards.md` → coding standards
+* `library-docs.md` → libraries and dependencies
+* `tbd.md` → unresolved requirements
+* `build-plan.md` → implementation order
+* `progress-tracker.md` → actual project status
+* `decisions.md` → meaningful implementation decisions
 
-Do not invent requirements, design decisions, content, or technical behavior that is marked unresolved in `tbd.md`.
+Do not override or duplicate decisions already defined by these files.
 
-## Archive
+## TBDs
 
-`context/archive/` contains historical planning documents only.
+* Confirmed → implement.
+* Not relevant to your task → continue.
+* Blocks your task → do not guess; defer it or use a pending/configurable approach.
+* Never invent requirements or event information.
+* When a TBD is resolved, update `tbd.md` and affected context files.
 
-Archived files must not be treated as authoritative and must not override the current files in `context/`.
+## Implementation Freedom
 
-## Implementation Rules
+The context files define **requirements and boundaries, not every implementation detail**.
 
-* Follow the architecture and coding standards defined in `context/`.
-* Reuse existing components, tokens, utilities, and abstractions before creating new ones.
-* Keep implementation aligned with the current build phase in `build-plan.md`.
-* Update `progress-tracker.md` when completing meaningful implementation work.
-* Do not introduce dependencies or architectural patterns without justification.
-* Do not hardcode values that are explicitly marked configurable or unresolved.
-* Preserve the established Tech4Bharat visual language and design tokens.
-* If a requirement is ambiguous or conflicts with the context files, stop and surface the conflict rather than guessing.
+Within those boundaries, developers and AI agents may choose reasonable approaches, including:
 
-## Before Making Changes
+* component implementation;
+* libraries and dependencies;
+* animations;
+* Tailwind configuration;
+* internal abstractions;
+* responsive implementation.
 
-Read the relevant files in `context/` before implementing a feature. At minimum, understand:
+Use engineering judgment when multiple approaches are valid.
 
-* `project-overview.md`
-* `tbd.md`
-* `architecture.md`
-* the relevant UI/design files
-* `build-plan.md`
-* `progress-tracker.md`
+A choice must not contradict the architecture, design system, security requirements, or TBDs.
 
-The repository code and the current `context/` files together define the implementation state. The archived documents do not.
+Document meaningful implementation decisions in `decisions.md`.
+
+For new dependencies, follow `library-docs.md`.
+
+## Architecture & UI
+
+Follow the relevant architecture and UI context files.
+
+* Reuse existing components where appropriate.
+* Keep server/client and data-access boundaries intact.
+* Do not create conditional participant/admin functionality before it is confirmed.
+* Do not invent content.
+* Keep UI consistent with the established design system.
+
+## Code Quality
+
+Follow `code-standards.md`.
+
+Keep code typed, focused, accessible, maintainable, and consistent with the existing project structure.
+
+## Progress
+
+Update `progress-tracker.md` when meaningful work is completed.
+
+Only mark work complete after it has been implemented and verified.
+
+## Core Rule
+
+**Build what is confirmed. Defer what is blocked. Never guess. Use engineering judgment where the context leaves room for choice.**
