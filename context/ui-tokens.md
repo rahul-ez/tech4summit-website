@@ -161,6 +161,8 @@ If a component needs a value that doesn't exist in this system, the correct acti
   --warning-light: 45 70% 18%;
 
   --error: 356 72% 54%;
+  --error-hover: 356 72% 47%;
+  --error-active: 356 72% 41%;
   --error-foreground: 210 20% 98%;
   --error-light: 356 55% 18%;
 
@@ -316,8 +318,8 @@ Pages break out of `content-max-width` only for: the hero section (uses `hero-ma
 | Ghost | transparent | `text-secondary` | none |
 | Destructive | `error` | `error-foreground` | none |
 
-- Hover: `primary` → `primary-hover`; `error` → darken 8%; Secondary/Ghost → background `surface-tertiary`
-- Active: `primary` → `primary-active`
+- Hover: `primary` → `primary-hover`; `error` → `error-hover`; Secondary/Ghost → background `surface-tertiary`
+- Active: `primary` → `primary-active`; `error` → `error-active`
 - Disabled: 40% opacity, `cursor-not-allowed`, no hover state applied
 - Focus: `focus-ring` applied as `box-shadow`, visible on keyboard focus (`:focus-visible`)
 

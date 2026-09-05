@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code local tooling (personal, not shared with the team)
+/.claude/
+
+# impeccable local session/cache state (design.json itself IS committed —
+# it's a real deliverable, the DESIGN.md sidecar)
+/.impeccable/hook.cache.json
+/.impeccable/live/

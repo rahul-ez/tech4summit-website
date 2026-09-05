@@ -28,14 +28,14 @@ This file is the catalogue of reusable UI building blocks for the Tech4Bharat 20
 - **Deprecated** — implemented, but should no longer be used for new work.
 - **Removed** — no longer exists in the implementation.
 
-No component in this file is marked Active yet — no implementation exists at the time of writing. Every entry below is Planned or Conditional. Marking something Active before it's actually built would make this registry unreliable.
+The Phase 0/1 primitive pass (see `progress-tracker.md`) implemented every Primitive Component below except Textarea/Select/Checkbox/Radio's underlying HTML-native alternative was not pursued — Select/Checkbox/Radio use Radix for full ARIA-listbox/checkbox/radiogroup compliance instead. Composed Components, Page-Level Patterns, and Conditional Components remain Planned/Conditional — only the Primitive layer is Active as of this writing.
 
 ---
 
 ## Primitive Components
 
 ### Button
-- **Status:** Planned
+- **Status:** Active — `components/ui/button.tsx`
 - **Purpose:** The single interactive-action element across the entire product.
 - **Use when:** Any clickable action — navigation CTAs, form submission, destructive confirmations.
 - **Do not use when:** A plain navigational link with no button semantics is more appropriate (e.g. inline text links) — those are not registered separately here because none are currently justified by a confirmed page pattern.
@@ -46,7 +46,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** No fifth variant exists yet; do not add "link" or "tertiary" variants speculatively.
 
 ### Input
-- **Status:** Planned
+- **Status:** Active — `components/ui/input.tsx`
 - **Purpose:** Single-line text entry.
 - **Use when:** Any short text/number/email field in a form.
 - **Do not use when:** Multi-line entry is needed (use Textarea).
@@ -57,7 +57,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** Registered as a primitive because forms are already a confirmed part of the product surface (registration entry point). No specific fields are assumed by this registration.
 
 ### Textarea
-- **Status:** Planned
+- **Status:** Active — `components/ui/textarea.tsx`
 - **Purpose:** Multi-line text entry.
 - **Use when:** Longer free-text input is needed.
 - **Do not use when:** A single line suffices (use Input).
@@ -68,7 +68,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** Vertical resize only, per `ui-rules.md`.
 
 ### Select
-- **Status:** Planned
+- **Status:** Active — `components/ui/select.tsx` (Radix `Select`, native `<select>` semantics aren't achievable with a styled listbox)
 - **Purpose:** Single choice from a defined set of options.
 - **Use when:** A form field needs a constrained set of choices.
 - **Do not use when:** More than a handful of mutually exclusive short options exist (consider Radio instead) or multiple selections are needed (not yet a registered primitive — not currently justified).
@@ -79,7 +79,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** No confirmed field currently requires this, but it's a standard form primitive and reasonably anticipated by any registration form.
 
 ### Checkbox
-- **Status:** Planned
+- **Status:** Active — `components/ui/checkbox.tsx` (Radix `Checkbox`)
 - **Purpose:** Binary/multi-select toggle within a form.
 - **Use when:** A yes/no or multi-select-from-a-list input is needed.
 - **Variants:** none.
@@ -88,7 +88,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Accessibility requirements:** native `<input type="checkbox">` or a fully ARIA-compliant custom equivalent; always has an associated label.
 
 ### Radio
-- **Status:** Planned
+- **Status:** Active — `components/ui/radio-group.tsx` (Radix `RadioGroup`)
 - **Purpose:** Single choice among a small visible set of options.
 - **Use when:** A short, mutually exclusive option set should be fully visible rather than hidden in a Select.
 - **Variants:** none.
@@ -97,7 +97,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Accessibility requirements:** grouped under a `<fieldset>`/`<legend>` or equivalent ARIA radiogroup pattern.
 
 ### Badge
-- **Status:** Planned
+- **Status:** Active — `components/ui/badge.tsx`
 - **Purpose:** Small inline status/label indicator.
 - **Use when:** Communicating a discrete state (pending, live, draft, success, error) inline with other content.
 - **Do not use when:** The message needs more than a couple of words or an action — use Status/Notification Banner instead.
@@ -108,7 +108,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** This is the component most at risk of semantic drift — see `ui-rules.md`'s explicit warning-vs-error distinction before adding any new usage.
 
 ### Card
-- **Status:** Planned
+- **Status:** Active — `components/ui/card.tsx`
 - **Purpose:** The base surface container for grouped content.
 - **Use when:** Any bounded content block — prize display, FAQ container, empty states, informational groupings.
 - **Variants:** Standard, Interactive, Featured, Informational, Status (per `ui-rules.md` Cards table).
@@ -118,7 +118,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** Featured variant's glow is reserved specifically for the 1st-place prize card per `ui-rules.md` — not a general-purpose "emphasis" toggle.
 
 ### Drawer
-- **Status:** Planned
+- **Status:** Active — `components/ui/sheet.tsx` (shadcn/Radix "Sheet"; this is the Drawer primitive registered here)
 - **Purpose:** Slide-in overlay panel from a screen edge.
 - **Use when:** Mobile navigation menu.
 - **Do not use when:** A centered, page-blocking confirmation is needed — use Dialog/Modal instead.
@@ -128,7 +128,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Accessibility requirements:** focus trapped while open, closes on `Escape`, focus returns to the trigger on close.
 
 ### Spinner / Loading Indicator
-- **Status:** Planned
+- **Status:** Active — `components/ui/spinner.tsx`, consumed by Button's `loading` prop
 - **Purpose:** Communicates an in-progress async action.
 - **Use when:** Button loading state, form submission in progress.
 - **Do not use when:** A full-page loading treatment is implied — none is currently justified by any confirmed flow.
@@ -138,7 +138,7 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Accessibility requirements:** `aria-live="polite"` announcement of the loading/complete transition where it affects form state.
 
 ### Separator
-- **Status:** Planned
+- **Status:** Active — `components/ui/separator.tsx`
 - **Purpose:** A visual divider between grouped content.
 - **Use when:** FAQ item dividers, table row borders, nav/content section boundaries.
 - **Key token dependencies:** `border-muted` (primary use), `border` (higher-emphasis contexts).
@@ -146,16 +146,16 @@ No component in this file is marked Active yet — no implementation exists at t
 - **Notes:** This is a lightweight style primitive, not a complex component — registered because it's reused across several composed components (FAQ, Table) rather than being redefined per-use.
 
 ### Dialog / Modal
-- **Status:** Planned
+- **Status:** Active — `components/ui/dialog.tsx`
 - **Purpose:** A centered, page-blocking overlay for a focused task or confirmation.
 - **Use when:** A future flow requires interrupting the user for a decision (e.g. a destructive confirmation once a delete-capable feature exists).
 - **Do not use when:** The task doesn't need to block the rest of the page — prefer inline states or a Banner.
 - **Key token dependencies:** `shadow-elevation`, `overlay`, `surface-secondary`, `radius-lg`.
 - **Accessibility requirements:** full dialog ARIA pattern (`role="dialog"`, `aria-modal`, focus trap, `Escape` to close, focus return on close).
-- **Notes:** No current confirmed page or flow requires this yet — it's registered only because `ui-tokens.md`'s `shadow-elevation` token explicitly anticipates modals/dropdowns/popovers. Do not build it speculatively; implement only when a concrete flow needs it.
+- **Notes:** Implemented in the Phase 0/1 primitive pass at explicit request rather than waiting for a concrete consuming flow; no page currently renders it. The next agent adding a real usage should not need to touch this file beyond this status line.
 
 ### Focus Treatment
-- **Status:** Planned
+- **Status:** Active — `.focus-ring` utility class in `app/globals.css`
 - **Purpose:** Not a rendered component — the shared focus-visibility style (`border-focus` + `focus-ring`) applied uniformly across every interactive primitive above.
 - **Notes:** Documented here so it isn't reinvented per-component. Implemented as a shared utility class/style, not a React component.
 
@@ -461,19 +461,19 @@ Before creating a new reusable component, ask:
 
 | Component | Category | Status | Reusable responsibility | Routes/Areas |
 |---|---|---|---|---|
-| Button | Primitive | Planned | Single interactive-action element | All routes |
-| Input | Primitive | Planned | Single-line text entry | `/register` |
-| Textarea | Primitive | Planned | Multi-line text entry | `/register` (if needed) |
-| Select | Primitive | Planned | Constrained-choice entry | `/register` (if needed) |
-| Checkbox | Primitive | Planned | Binary/multi-select entry | `/register` (if needed) |
-| Radio | Primitive | Planned | Single-choice entry | `/register` (if needed) |
-| Badge | Primitive | Planned | Inline status/label indicator | All routes |
-| Card | Primitive | Planned | Base bounded-content surface | All routes |
-| Drawer | Primitive | Planned | Slide-in overlay panel | Mobile nav |
-| Spinner / Loading Indicator | Primitive | Planned | In-progress async state | Buttons, forms |
-| Separator | Primitive | Planned | Visual divider | FAQ, Table |
-| Dialog / Modal | Primitive | Planned | Centered blocking overlay | None confirmed yet |
-| Focus Treatment | Primitive (style) | Planned | Shared focus-visibility style | All interactive elements |
+| Button | Primitive | Active | Single interactive-action element | All routes |
+| Input | Primitive | Active | Single-line text entry | `/register` |
+| Textarea | Primitive | Active | Multi-line text entry | `/register` (if needed) |
+| Select | Primitive | Active | Constrained-choice entry | `/register` (if needed) |
+| Checkbox | Primitive | Active | Binary/multi-select entry | `/register` (if needed) |
+| Radio | Primitive | Active | Single-choice entry | `/register` (if needed) |
+| Badge | Primitive | Active | Inline status/label indicator | All routes |
+| Card | Primitive | Active | Base bounded-content surface | All routes |
+| Drawer | Primitive | Active | Slide-in overlay panel | Mobile nav |
+| Spinner / Loading Indicator | Primitive | Active | In-progress async state | Buttons, forms |
+| Separator | Primitive | Active | Visual divider | FAQ, Table |
+| Dialog / Modal | Primitive | Active | Centered blocking overlay | None confirmed yet |
+| Focus Treatment | Primitive (style) | Active | Shared focus-visibility style | All interactive elements |
 | Site Header | Composed | Planned | Persistent public navigation | All public routes |
 | Mobile Navigation Drawer | Composed | Planned | Mobile-collapsed nav | All public routes |
 | Page Header | Composed | Planned | Standard non-hero page intro | All non-home routes |

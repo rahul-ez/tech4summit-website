@@ -1,26 +1,211 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
+/*
+ * Token source of truth: context/ui-tokens.md's "globals.css — Complete Token
+ * Definition" block, reproduced verbatim below, with one deliberate deviation:
+ * --font-display/--font-body/--font-mono resolve through the next/font
+ * variables set on <html> in app/layout.tsx instead of a literal font-name
+ * string, so the three project fonts are actually self-hosted/optimized
+ * rather than relying on a system-installed 'Sora'/'Inter'/'JetBrains Mono'.
+ * See context/decisions.md (DEC-001) for the reasoning.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* ============ Typography ============ */
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* ============ Surfaces ============ */
+  --background: 224 42% 6%;
+  --surface: 224 38% 9%;
+  --surface-secondary: 224 32% 13%;
+  --surface-tertiary: 224 28% 17%;
+  --surface-muted: 224 20% 11%;
+
+  /* ============ Borders ============ */
+  --border: 224 20% 20%;
+  --border-light: 224 16% 26%;
+  --border-muted: 224 14% 15%;
+  --border-focus: 28 90% 58%;
+
+  /* ============ Text ============ */
+  --text-primary: 210 20% 98%;
+  --text-secondary: 216 16% 74%;
+  --text-muted: 216 12% 52%;
+  --text-inverse: 224 42% 8%;
+
+  /* ============ Brand / Accent ============ */
+  --primary: 28 88% 54%;
+  --primary-hover: 28 88% 47%;
+  --primary-active: 28 86% 41%;
+  --primary-light: 28 90% 82%;
+  --primary-muted: 28 35% 20%;
+  --primary-foreground: 224 42% 8%;
+
+  --ember: 14 82% 56%;
+  --ember-hover: 14 82% 49%;
+  --ember-foreground: 210 20% 98%;
+
+  /* ============ Semantic ============ */
+  --success: 152 55% 45%;
+  --success-foreground: 210 20% 98%;
+  --success-light: 152 45% 16%;
+
+  --warning: 45 93% 58%;
+  --warning-foreground: 224 42% 8%;
+  --warning-light: 45 70% 18%;
+
+  --error: 356 72% 54%;
+  --error-hover: 356 72% 47%;
+  --error-active: 356 72% 41%;
+  --error-foreground: 210 20% 98%;
+  --error-light: 356 55% 18%;
+
+  --info: 205 85% 58%;
+  --info-foreground: 210 20% 98%;
+  --info-light: 205 60% 18%;
+
+  /* ============ Effects ============ */
+  --glow-primary: 0 0 32px hsl(28 88% 54% / 0.35);
+  --glow-ember: 0 0 24px hsl(14 82% 56% / 0.30);
+  --focus-ring: 0 0 0 3px hsl(28 90% 58% / 0.45);
+  --overlay: 224 60% 4% / 0.72;
+  --shadow-elevation: 0 8px 24px hsl(224 60% 2% / 0.45);
+
+  /* ============ Radius ============ */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.25rem;
+  --radius-full: 9999px;
 }
 
+/*
+ * Tailwind v4 is CSS-first (no tailwind.config.ts) — this @theme inline block
+ * is this project's replacement for ui-tokens.md's tailwind.config.ts
+ * excerpt, adapted to the v4 mechanism. Every entry maps a token above to the
+ * Tailwind namespace that generates its utilities (--color-* -> bg-/text-/
+ * border-*, --font-* -> font-*, --radius-* -> rounded-*), referencing the
+ * runtime :root variable rather than duplicating its value, so a token only
+ * ever has one source of truth. See context/decisions.md (DEC-001).
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: hsl(var(--background));
+
+  --color-surface: hsl(var(--surface));
+  --color-surface-secondary: hsl(var(--surface-secondary));
+  --color-surface-tertiary: hsl(var(--surface-tertiary));
+  --color-surface-muted: hsl(var(--surface-muted));
+
+  --color-border: hsl(var(--border));
+  --color-border-light: hsl(var(--border-light));
+  --color-border-muted: hsl(var(--border-muted));
+  --color-border-focus: hsl(var(--border-focus));
+
+  --color-text-primary: hsl(var(--text-primary));
+  --color-text-secondary: hsl(var(--text-secondary));
+  --color-text-muted: hsl(var(--text-muted));
+  --color-text-inverse: hsl(var(--text-inverse));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-hover: hsl(var(--primary-hover));
+  --color-primary-active: hsl(var(--primary-active));
+  --color-primary-light: hsl(var(--primary-light));
+  --color-primary-muted: hsl(var(--primary-muted));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-ember: hsl(var(--ember));
+  --color-ember-hover: hsl(var(--ember-hover));
+  --color-ember-foreground: hsl(var(--ember-foreground));
+
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-success-light: hsl(var(--success-light));
+
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-warning-light: hsl(var(--warning-light));
+
+  --color-error: hsl(var(--error));
+  --color-error-hover: hsl(var(--error-hover));
+  --color-error-active: hsl(var(--error-active));
+  --color-error-foreground: hsl(var(--error-foreground));
+  --color-error-light: hsl(var(--error-light));
+
+  --color-info: hsl(var(--info));
+  --color-info-foreground: hsl(var(--info-foreground));
+  --color-info-light: hsl(var(--info-light));
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+
+  --color-overlay: hsl(var(--overlay));
+  --shadow-elevation: var(--shadow-elevation);
+  --shadow-glow-primary: var(--glow-primary);
+  --shadow-glow-ember: var(--glow-ember);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * shadcn/ui primitives (added via `shadcn add`) are restyled to consume the
+ * tokens above directly (bg-surface-secondary, text-text-primary, etc. — see
+ * components/ui/*), but Radix-based pieces (Select/Dialog/Sheet popovers,
+ * default focus-visible rings, aria-invalid states) still read shadcn's own
+ * conventional --card/--popover/--secondary/--muted/--accent/--destructive/
+ * --input/--ring slots internally. These are aliased onto our tokens so
+ * nothing silently falls back to shadcn's unthemed defaults. No new visual
+ * token is introduced — every value here still resolves to a
+ * context/ui-tokens.md variable. See context/decisions.md (DEC-001).
+ */
+@theme inline {
+  --color-card: hsl(var(--surface-secondary));
+  --color-card-foreground: hsl(var(--text-primary));
+  --color-popover: hsl(var(--surface-secondary));
+  --color-popover-foreground: hsl(var(--text-primary));
+  --color-secondary: hsl(var(--surface-secondary));
+  --color-secondary-foreground: hsl(var(--text-primary));
+  --color-muted: hsl(var(--surface-muted));
+  --color-muted-foreground: hsl(var(--text-muted));
+  --color-accent: hsl(var(--surface-tertiary));
+  --color-accent-foreground: hsl(var(--text-primary));
+  --color-destructive: hsl(var(--error));
+  --color-destructive-foreground: hsl(var(--error-foreground));
+  --color-input: hsl(var(--border));
+  --color-ring: hsl(var(--border-focus));
+}
+
+/*
+ * This product is dark-mode-only per context/ui-tokens.md/ui-rules.md — there
+ * is deliberately no `.dark` class variant or light-theme override block.
+ * shadcn's default init scaffolds both; only the single palette above ships.
+ */
+@layer base {
+  * {
+    @apply border-border outline-border-focus/50;
+  }
+
+  body {
+    @apply bg-background text-text-primary font-body;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Focus Treatment (context/ui-registry.md) — the one shared focus-visible
+   style every interactive primitive uses instead of defining its own. */
+@layer utilities {
+  .focus-ring {
+    outline: none;
+  }
+
+  .focus-ring:focus-visible {
+    border-color: hsl(var(--border-focus));
+    box-shadow: var(--focus-ring);
+  }
 }

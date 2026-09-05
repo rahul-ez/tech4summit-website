@@ -2,11 +2,11 @@
 
 ## 1. Current Project State
 
-**No implementation exists yet.** As of this writing, the project consists entirely of context/documentation files (`project-overview.md`, `tbd.md`, `architecture.md`, `ui-tokens.md`, `ui-rules.md`, `ui-registry.md`, `code-standards.md`, `library-docs.md`, `build-plan.md`) plus three earlier planning documents (`design-system.md`, `site-structure.md`, `content-config.md`) produced before this context system existed. There is no Next.js project, no repository scaffolding, no components, no database, and nothing deployed.
+**Phase 0 (Foundation) is functionally complete and Phase 1 (Design System)'s Primitive Component layer is implemented.** The Next.js App Router project (TypeScript strict, Tailwind CSS v4) is scaffolded and runs; `app/globals.css` carries the complete token set from `ui-tokens.md` (plus two additions — `--error-hover`/`--error-active`, see `decisions.md` DEC-002) via a Tailwind v4 `@theme inline` block (see `decisions.md` DEC-001 for why this replaces `ui-tokens.md`'s `tailwind.config.ts` excerpt); Sora/Inter/JetBrains Mono are loaded via `next/font/google` in the root layout; and every Primitive Component in `ui-registry.md` (Button, Input, Textarea, Select, Checkbox, Radio, Badge, Card, Drawer, Spinner, Separator, Dialog/Modal, Focus Treatment) is implemented in `components/ui/` on top of shadcn/ui + Radix, restyled to the project's own tokens. A temporary `/dev/components` review route renders every primitive/variant/state for visual QA against `ui-tokens.md`'s tables. No Composed Component, Page-Level Pattern, or public page exists yet — Phase 1's remaining tasks (composed components) and all of Phase 2 are still ahead.
 
-- **Current development phase:** Phase 0 (Foundation), Not Started.
-- **Is the project runnable?** No — no codebase exists to run.
-- **Is the public website implemented?** No.
+- **Current development phase:** Phase 0 (Foundation) — functionally done; Phase 1 (Design System) — Primitive Component layer done, Composed Components not started.
+- **Is the project runnable?** Yes — `npm run dev` serves `/` and the internal `/dev/components` review route; `npm run build` and `npm run lint` both pass cleanly.
+- **Is the public website implemented?** No — `/` is still a placeholder pointing at the component-review route; none of the seven public pages exist.
 - **Does backend functionality exist?** No — no Supabase project has been provisioned or referenced as actually created.
 - **Does participant functionality exist?** No — also Conditional per `tbd.md`, so this is expected at this stage regardless.
 - **Does admin functionality exist?** No — also Conditional per `tbd.md`.
@@ -18,8 +18,8 @@
 
 | Phase | Status | Completion | Notes |
 |---|---|---|---|
-| 0 — Foundation | Not Started | None | No Next.js project exists |
-| 1 — Design System | Not Started | None | Depends on Phase 0 |
+| 0 — Foundation | Functionally Complete | Project scaffold, tokens, fonts, folder structure done. `config/site.ts` and Supabase env setup not yet done. | See Section 3 |
+| 1 — Design System | In Progress | Primitive Components (13/13) Active; Composed Components (Site Header, Hero, Timeline, Prize Card, etc.) Not Started | See Section 4 |
 | 2 — Public Website | Not Started | None | Depends on Phase 1 |
 | 3 — Registration Entry | Not Started | None | Depends on Phase 1–2; also depends on `tbd.md`'s Registration decision for full scope |
 | 4 — Participant Experience | Conditional | None | Gated on `tbd.md` decisions (Team Structure, Participant Experience, Submission) |
@@ -33,16 +33,16 @@
 
 | Item | Status | Evidence / Location | Notes |
 |---|---|---|---|
-| Next.js setup | Not Started | None | No project scaffold exists |
-| TypeScript | Not Started | None | No `tsconfig.json` exists |
-| Tailwind CSS | Not Started | None | No `tailwind.config.ts` exists |
-| shadcn/ui | Not Started | None | No components added |
-| Project folder structure | Not Started | None | `architecture.md`'s tree is not yet instantiated |
-| Configuration (`config/site.ts`) | Not Started | None | Not yet created |
+| Next.js setup | Done | `package.json` (Next.js 16.3.4, App Router), `app/` | Scaffolded via Create Next App, then built on |
+| TypeScript | Done | `tsconfig.json` (strict mode) | `npx tsc --noEmit` passes with zero errors |
+| Tailwind CSS | Done | `app/globals.css` (Tailwind v4, CSS-first — no `tailwind.config.ts` by design, see `decisions.md` DEC-001) | Full token set + `@theme inline` mapping in place |
+| shadcn/ui | Done (Primitives only) | `components.json` (`radix` base, `nova` preset), `components/ui/*` | Button/Input/Textarea/Select/Checkbox/Radio/Badge/Card/Separator/Dialog/Sheet/Spinner all added and restyled to project tokens |
+| Project folder structure | Partial | `app/`, `components/ui/`, `lib/` exist | `components/public`, `lib/db`, `lib/validation`, `actions/`, `types/`, `config/` from `architecture.md`'s tree not yet created — no page/data work has needed them yet |
+| Configuration (`config/site.ts`) | Not Started | None | Still queued — Section 14 |
 | Environment setup | Not Started | None | No `.env.local` or Vercel env vars configured |
 | Supabase setup | Not Started | None | No Supabase project referenced as provisioned |
-| Shared utilities (`lib/utils.ts`) | Not Started | None | Not yet created |
-| Middleware (`middleware.ts`) | Not Started | None | Not yet created |
+| Shared utilities (`lib/utils.ts`) | Done | `lib/utils.ts` (re-exports `cn` from the `cn` package) | |
+| Middleware (`middleware.ts`) | Not Started | None | Not yet created; note Next.js 16 renames this file to `proxy.ts` when it's eventually added — see `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md` |
 | Error/loading foundations | Not Started | None | No `loading.tsx`/`error.tsx` exist |
 
 ---
@@ -53,16 +53,17 @@ Cross-referenced against `ui-registry.md`'s Current Registry — every entry the
 
 | Item | Status | Evidence / Location | Notes |
 |---|---|---|---|
-| Global design tokens (`globals.css`) | Not Started | None | Values are fully specified in `ui-tokens.md` but not yet written into a real `globals.css` |
-| Typography (font loading) | Not Started | None | Fonts specified, not loaded |
-| Color system (Tailwind mapping) | Not Started | None | Mapping specified in `ui-tokens.md`, not yet implemented in `tailwind.config.ts` |
-| Spacing | Not Started | None | — |
-| Button | Not Started | None | Registered Planned in `ui-registry.md` |
-| Input / Textarea / Select / Checkbox / Radio | Not Started | None | Registered Planned |
-| Card | Not Started | None | Registered Planned |
-| Badge | Not Started | None | Registered Planned |
-| Dialog/Modal | Not Started | None | Registered Planned; no confirmed use case yet |
-| Site Header / Mobile Navigation Drawer | Not Started | None | Registered Planned |
+| Global design tokens (`globals.css`) | Done | `app/globals.css` | Full `:root` block from `ui-tokens.md` plus `--error-hover`/`--error-active` (DEC-002) |
+| Typography (font loading) | Done | `app/layout.tsx` | Sora/Inter/JetBrains Mono via `next/font/google`, wired to `--font-display`/`--font-body`/`--font-mono` (DEC-001) |
+| Color system (Tailwind mapping) | Done | `app/globals.css` `@theme inline` blocks | CSS-first Tailwind v4 mapping, not a `tailwind.config.ts` — see DEC-001 |
+| Spacing | Done (no action needed) | — | `ui-tokens.md`'s `space-*` scale is an exact match for Tailwind's default numeric spacing scale — no custom mapping required, per DEC-001 |
+| Button | Active | `components/ui/button.tsx` | Primary/Secondary/Ghost/Destructive + loading (via Spinner) |
+| Input / Textarea / Select / Checkbox / Radio | Active | `components/ui/{input,textarea,select,checkbox,radio-group}.tsx` | Select/Checkbox/Radio built on Radix for full ARIA compliance |
+| Card | Active | `components/ui/card.tsx` | Standard/Interactive/Featured/Informational/Status variants |
+| Badge | Active | `components/ui/badge.tsx` | Default/Success/Warning/Error/Informational/Live |
+| Dialog/Modal | Active | `components/ui/dialog.tsx` | Built ahead of a confirmed use case at explicit request — see `ui-registry.md`'s note |
+| Drawer / Spinner / Separator | Active | `components/ui/{sheet,spinner,separator}.tsx` | Sheet = the registered Drawer |
+| Site Header / Mobile Navigation Drawer | Not Started | None | Registered Planned — Composed Component, not yet built |
 | Page Header | Not Started | None | Registered Planned |
 | Hero | Not Started | None | Registered Planned |
 | FAQ Item/Accordion | Not Started | None | Registered Planned |
@@ -70,8 +71,8 @@ Cross-referenced against `ui-registry.md`'s Current Registry — every entry the
 | Prize Card / Prize Display | Not Started | None | Registered Planned |
 | Empty State | Not Started | None | Registered Planned |
 | Pending Confirmation State | Not Started | None | Registered Planned |
-| Responsive behavior | Not Started | None | Specified in `ui-rules.md`, not yet implemented anywhere |
-| Accessibility foundations (Focus Treatment) | Not Started | None | Specified, not implemented |
+| Responsive behavior | Not Started | None | No page/composed component exists yet to apply `ui-rules.md`'s Responsive Behavior table to |
+| Accessibility foundations (Focus Treatment) | Done | `.focus-ring` utility class in `app/globals.css`, applied by every interactive primitive above | |
 
 ---
 
@@ -224,36 +225,45 @@ None of the above are coding failures — they are organizer/product decisions t
 
 ## 12. Recently Completed
 
-No implementation history is currently recorded. The context/documentation files listed in Section 1 have been produced, but no code, configuration, or deployed artifact exists yet. This is the first generation of this file.
+**2026-09-06 — Phase 0 foundation + Phase 1 Primitive Components.**
+- Verified the existing Next.js 16.3.4 App Router scaffold builds and serves (`npm install`, `npm run dev`, `npm run build`, `npm run lint` all clean).
+- Rewrote `app/globals.css` with `ui-tokens.md`'s complete `:root` token block plus a Tailwind v4 `@theme inline` mapping (CSS-first — no `tailwind.config.ts`; see `decisions.md` DEC-001).
+- Loaded Sora/Inter/JetBrains Mono via `next/font/google` in `app/layout.tsx`, wired to `--font-display`/`--font-body`/`--font-mono`.
+- Ran `shadcn@latest init` (radix base, nova preset) and added Button, Input, Textarea, Select, Checkbox, Radio(Group), Badge, Card, Dialog, Separator, and Sheet (the registered Drawer); extracted a Spinner primitive from Button's loading state. Every primitive was restyled from shadcn's defaults to the project's own tokens per `build-plan.md` Phase 1 Task 1.
+- Added `--error-hover`/`--error-active` tokens (DEC-002) to complete the Destructive button's hover/active spec.
+- Built a temporary `/dev/components` route rendering every primitive across its default/hover/disabled/error states for review against `ui-tokens.md`'s tables.
+- Updated `ui-registry.md` (Primitive Components → Active), `library-docs.md` (new dependencies), and `decisions.md` (DEC-001, DEC-002) as part of this change.
 
 ---
 
 ## 13. Current Focus
 
 ### Current Task
-Begin `build-plan.md` Phase 0 — Foundation: scaffold the Next.js project, configure TypeScript/Tailwind, write `globals.css` from `ui-tokens.md`, and set up the folder structure from `architecture.md`.
+Phase 0 (Foundation) is functionally complete and Phase 1 (Design System)'s Primitive Component layer is implemented (this session). Remaining Phase 0 items are `config/site.ts` and Supabase/env setup (deferred — Supabase setup belongs to Phase 5 per the build plan; `config/site.ts` is still queued). The next substantive work is Phase 1's Composed Components (Site Header, Mobile Navigation Drawer, Page Header, Hero, FAQ Item, Timeline, Prize Card, Prize Display, Empty State, Pending Confirmation State).
 
 ### Why
-Every later phase depends on Phase 0 existing, and none of Phase 0's tasks depend on any unresolved `tbd.md` decision — it can begin immediately with zero risk of assuming an unconfirmed requirement.
+Phase 2 (public pages) can't be built without the Composed Components it assembles, per `build-plan.md`'s dependency order. The Primitive layer those Composed Components need now exists and was reviewed at `/dev/components`.
 
 ### Dependencies
-None — this is the first implementation work on the project.
+Phase 0's token/font setup (done) and the Primitive Component layer (done, this session).
 
 ### Avoid
-- Do not start on `/register`'s form fields, team/participant/admin work, or any Supabase table beyond what Phase 0 calls for (none yet) — all of that is either gated on unresolved decisions or sequenced into later phases.
+- Do not start on `/register`'s form fields, team/participant/admin work, or any Supabase table — all of that is either gated on unresolved `tbd.md` decisions or sequenced into later phases.
 - Do not provision Supabase yet — that begins in Phase 5, and `config/site.ts` (Phase 0) is the interim data source.
+- Do not link `/dev/components` from any real navigation — it's a temporary review route, to be deleted before launch per `build-plan.md` Phase 1.
+- Do not build Site Header/Mobile Navigation Drawer against invented nav item labels — `ui-rules.md`'s Navigation section already lists the confirmed public routes.
 
 ---
 
 ## 14. Next Tasks
 
-1. Initialize the Next.js App Router project with strict TypeScript, per `architecture.md` and `build-plan.md` Phase 0.
-2. Configure Tailwind and write `globals.css` using the complete token set from `ui-tokens.md`.
-3. Load the three project fonts (Sora, Inter, JetBrains Mono) in the root layout.
-4. Create the folder structure specified in `architecture.md` (excluding `(participant)`/`(admin)`, which remain gated).
-5. Create `config/site.ts` populated only with the facts in `tbd.md`'s Confirmed table.
-6. Once Phase 0 is verified working (project builds, tokens render correctly), begin Phase 1's primitive components, starting with Button, Card, and Badge.
-7. Update this file's Phase Status, Foundation table, and Context File Synchronization table as each item above is completed.
+1. Build Phase 1's Composed Components in `components/public/`: Site Header, Mobile Navigation Drawer (using the Drawer/Sheet primitive), Page Header, Hero (with the hero-only ignition glow + circuit texture per `ui-rules.md`), FAQ Item/Accordion, Timeline, Prize Card, Prize Display, Empty State, Pending Confirmation State.
+2. Verify each new Composed Component's responsive behavior against `ui-rules.md`'s Responsive Behavior table and accessibility against `ui-registry.md`'s Accessibility Registry.
+3. Update `ui-registry.md`'s Composed Components' Status fields and Current Registry table as each is built, per this session's approach for the Primitive layer.
+4. Create `config/site.ts` populated only with the facts in `tbd.md`'s Confirmed table (still outstanding from Phase 0).
+5. Once Composed Components exist, begin Phase 2's public pages.
+6. Delete `/dev/components` once real pages make it redundant for visual QA, or before launch at the latest.
+7. Update this file's Phase Status, Design System table, and Context File Synchronization table as each item above is completed.
 
 ---
 
@@ -261,15 +271,16 @@ None — this is the first implementation work on the project.
 
 | Context File | Status | Needs Update? | Reason |
 |---|---|---|---|
-| `project-overview.md` | In sync | No | No implementation exists yet that would change confirmed scope |
+| `project-overview.md` | In sync | No | No implementation has changed confirmed scope |
 | `tbd.md` | In sync | No | No decision has been confirmed since it was written |
 | `architecture.md` | In sync | No | No implementation has established or contradicted an architectural detail yet |
-| `ui-tokens.md` | In sync | No | No component implementation exists to reveal a missing token |
-| `ui-rules.md` | In sync | No | No composition work exists yet |
-| `ui-registry.md` | In sync | No | All entries correctly remain Planned/Conditional — nothing is Active yet |
-| `code-standards.md` | In sync | No | No code exists to check against these standards |
-| `library-docs.md` | In sync | No | No library has been installed or configured yet |
-| `build-plan.md` | In sync | No | No phase has progressed past Not Started |
-| `progress-tracker.md` | Current | No | This file, just generated, accurately reflects the pre-implementation state |
+| `ui-tokens.md` | Updated this session | No (current) | Added `--error-hover`/`--error-active` (DEC-002) — the Buttons row was updated to match |
+| `ui-rules.md` | In sync | No | No composition work exists yet (Composed Components not started) |
+| `ui-registry.md` | Updated this session | No (current) | Every Primitive Component moved Planned → Active with its implementation file noted |
+| `code-standards.md` | In sync | No | Implemented code follows these standards (strict TS, Server Components by default, token-only styling) |
+| `library-docs.md` | Updated this session | No (current) | Added shadcn/ui's actual CLI config (radix base, nova preset), radix-ui, class-variance-authority, cn, lucide-react, tw-animate-css |
+| `build-plan.md` | In sync | No | Phase 0 tasks match what was built; Phase 1 Task 1 (primitives) is the first Phase 1 task completed |
+| `decisions.md` | Updated this session | No (current) | DEC-001 (Tailwind v4 theming / next/font wiring / shadcn integration) and DEC-002 (error-hover/active tokens) logged |
+| `progress-tracker.md` | Current | No | This update |
 
-All context files are currently synchronized with reality because reality is "nothing has been implemented yet." This table should be re-checked at the end of every implementation session.
+This table should be re-checked at the end of every implementation session.

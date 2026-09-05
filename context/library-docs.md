@@ -17,8 +17,13 @@ These are actually in use, per `architecture.md`:
 | Next.js (App Router) | Framework, routing, rendering | nextjs.org/docs |
 | React | UI library | react.dev |
 | TypeScript (strict) | Type safety | typescriptlang.org/docs |
-| Tailwind CSS | Styling, consumes `ui-tokens.md`'s tokens | tailwindcss.com/docs |
-| shadcn/ui | UI primitive source (`components/ui`) | ui.shadcn.com/docs |
+| Tailwind CSS v4 | Styling, consumes `ui-tokens.md`'s tokens via a CSS-first `@theme inline` block in `app/globals.css` (no `tailwind.config.ts` — see `context/decisions.md` DEC-001) | tailwindcss.com/docs |
+| shadcn/ui (CLI v4.21, `radix` base, `nova` preset) | UI primitive source (`components/ui`); primitives are restyled with project tokens immediately after being added, per `build-plan.md` Phase 1 | ui.shadcn.com/docs |
+| radix-ui | Accessible unstyled primitive behavior (focus trap, ARIA dialog/listbox/checkbox patterns) underlying every `components/ui/*` primitive that needs it (Select, Checkbox, RadioGroup, Dialog, Sheet, Separator) | radix-ui.com/primitives/docs |
+| class-variance-authority | Typed variant classnames for primitives with a `variant` prop (Button, Badge, Card) | cva.style |
+| cn | Classname merging (clsx + tailwind-merge, in one package); `lib/utils.ts` re-exports it as `cn` | npmjs.com/package/cn |
+| lucide-react | Icon set for functional icons (chevrons, check, close, spinner) — status is still always paired with text/color per `ui-rules.md`, icons are never decoration | lucide.dev |
+| tw-animate-css | Tailwind-consumable open/close animation keyframes used by Select/Dialog/Sheet's Radix transitions | github.com/Wombosvideo/tw-animate-css |
 | Supabase | Database (Postgres), Auth, Storage | supabase.com/docs |
 | Zod | Validation (`lib/validation`) | zod.dev |
 | Vercel | Hosting/deployment | vercel.com/docs |
