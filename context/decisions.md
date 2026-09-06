@@ -64,3 +64,21 @@ Each of these is a real fork in a legitimate direction with no single "obvious" 
 
 **Impact:**
 `context/ui-tokens.md`, `app/globals.css`, `components/ui/button.tsx` (Destructive variant).
+
+---
+
+### DEC-003 — Supabase SSR cookie architecture and Next.js 16 proxy adoption
+**Status:** Accepted
+**Date:** 2026-09-06
+**Owner:** Backend Implementation agent (Phase 5 / Foundation)
+
+**Decision:**
+1. **Adopted `@supabase/ssr` with Next.js 16 async cookie handlers.** In `lib/supabase/server.ts`, `cookies()` returns a Promise that is awaited, and `setAll` wraps cookie modification in a try/catch block so that Server Components reading data do not crash on immutable cookies while Server Actions and Route Handlers persist cookies.
+2. **Next.js 16 Proxy Convention.** Migrated the route-protection and session-refresh layer to `proxy.ts` (exporting `export async function proxy`) to follow Next.js 16 conventions and avoid the deprecated `middleware.ts` naming.
+3. **Defense-in-Depth Authorization.** In addition to route-level checks in `proxy.ts`, every Server Action in `actions/` independently re-validates identity via `lib/auth/session.ts` and input via `lib/validation/` before invoking `lib/db/`.
+
+**Reason:**
+Prevents deprecation warnings, adheres to strict App Router server/client separation, and enforces non-bypassable security invariants.
+
+**Impact:**
+`lib/supabase/`, `lib/auth/`, `proxy.ts`, `actions/`, `types/database.ts`.

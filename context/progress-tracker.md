@@ -37,12 +37,12 @@
 | TypeScript | Done | `tsconfig.json` (strict mode) | `npx tsc --noEmit` passes with zero errors |
 | Tailwind CSS | Done | `app/globals.css` (Tailwind v4, CSS-first — no `tailwind.config.ts` by design, see `decisions.md` DEC-001) | Full token set + `@theme inline` mapping in place |
 | shadcn/ui | Done (Primitives only) | `components.json` (`radix` base, `nova` preset), `components/ui/*` | Button/Input/Textarea/Select/Checkbox/Radio/Badge/Card/Separator/Dialog/Sheet/Spinner all added and restyled to project tokens |
-| Project folder structure | Partial | `app/`, `components/ui/`, `lib/` exist | `components/public`, `lib/db`, `lib/validation`, `actions/`, `types/`, `config/` from `architecture.md`'s tree not yet created — no page/data work has needed them yet |
-| Configuration (`config/site.ts`) | Not Started | None | Still queued — Section 14 |
-| Environment setup | Not Started | None | No `.env.local` or Vercel env vars configured |
-| Supabase setup | Not Started | None | No Supabase project referenced as provisioned |
+| Project folder structure | Done | `app/`, `components/ui/`, `lib/supabase/`, `lib/auth/`, `lib/db/`, `lib/validation/`, `actions/`, `types/`, `config/`, `supabase/migrations/` | Complete backend and foundational layers established per `architecture.md` |
+| Configuration (`config/site.ts`) | Done | `config/site.ts` | Populated with confirmed facts from `tbd.md` |
+| Environment setup | Done | `.env.example`, `.env.local` | Supabase URL and anon key template configured |
+| Supabase setup | Done | `lib/supabase/{client,server}.ts`, `types/database.ts` | Typed `@supabase/ssr` client factories and DB types created |
 | Shared utilities (`lib/utils.ts`) | Done | `lib/utils.ts` (re-exports `cn` from the `cn` package) | |
-| Middleware (`middleware.ts`) | Not Started | None | Not yet created; note Next.js 16 renames this file to `proxy.ts` when it's eventually added — see `node_modules/next/dist/docs/01-app/02-guides/upgrading/version-16.md` |
+| Middleware / Proxy (`proxy.ts`) | Done | `proxy.ts` | Session refresh & route protection configured per Next.js 16 conventions |
 | Error/loading foundations | Not Started | None | No `loading.tsx`/`error.tsx` exist |
 
 ---
@@ -133,25 +133,25 @@ Nothing in this section is implemented. This is expected at the current project 
 ---
 
 ## 8. Backend
-
+ 
 ### Database
 | Item | Status | Notes |
 |---|---|---|
-| Supabase project | Not Started | — |
-| PostgreSQL schema | Not Started | Defined conceptually in `architecture.md`, not yet created in a real database |
-| Migrations | Not Started | Migration workflow itself not yet chosen (see `library-docs.md`) |
-| Tables | Not Started | — |
-| Constraints | Not Started | — |
-| Indexes | Not Started | — |
-| Row Level Security | Not Started | — |
+| Supabase project | Active (Foundation Ready) | Client factories, types, and env configuration created |
+| PostgreSQL schema | Done | `supabase/migrations/20260906000001_initial_schema.sql` created with profiles, hackathon_config, registrations, announcements |
+| Migrations | Done | Versioned SQL migration in `supabase/migrations/` |
+| Tables | Done | `profiles`, `hackathon_config`, `registrations`, `announcements` |
+| Constraints | Done | Foreign keys, checks, unique constraints configured in migration |
+| Indexes | Done | Indexed `registrations.profile_id` and `announcements.published_at` |
+| Row Level Security | Done | Full RLS policies defined on all tables with `is_admin()` security definer |
 
 ### Authentication
 | Item | Status | Notes |
 |---|---|---|
-| Auth configuration | Not Started | — |
-| Session handling | Not Started | — |
-| Protected routes | Not Started | — |
-| Authorization | Not Started | — |
+| Auth configuration | Done | Password, OTP, and session handling in `actions/auth.ts` and `lib/auth/session.ts` |
+| Session handling | Done | SSR cookie session management in `lib/supabase/server.ts` and `proxy.ts` |
+| Protected routes | Done | Route protection baseline in `proxy.ts` for `(admin)` and `(participant)` routes |
+| Authorization | Done | `getAuthenticatedProfile()`, `hasRole()`, and Server Action level checks |
 
 ### Storage
 | Item | Status | Notes |
@@ -163,10 +163,10 @@ Nothing in this section is implemented. This is expected at the current project 
 ### Server Actions / API
 | Item | Status | Notes |
 |---|---|---|
-| Validation | Not Started | — |
-| Authorization | Not Started | — |
-| Database operations | Not Started | — |
-| Error handling | Not Started | — |
+| Validation | Done | Authoritative Zod schemas in `lib/validation/{auth,config,profile,registration}.ts` |
+| Authorization | Done | Server-side identity & role validation on all mutations |
+| Database operations | Done | Typed data-access query functions in `lib/db/{config,profiles,registrations,announcements}.ts` |
+| Error handling | Done | Translated generic errors with typed `ActionResult` returns |
 
 ---
 

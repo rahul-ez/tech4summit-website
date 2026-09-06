@@ -24,8 +24,8 @@ These are actually in use, per `architecture.md`:
 | cn | Classname merging (clsx + tailwind-merge, in one package); `lib/utils.ts` re-exports it as `cn` | npmjs.com/package/cn |
 | lucide-react | Icon set for functional icons (chevrons, check, close, spinner) — status is still always paired with text/color per `ui-rules.md`, icons are never decoration | lucide.dev |
 | tw-animate-css | Tailwind-consumable open/close animation keyframes used by Select/Dialog/Sheet's Radix transitions | github.com/Wombosvideo/tw-animate-css |
-| Supabase | Database (Postgres), Auth, Storage | supabase.com/docs |
-| Zod | Validation (`lib/validation`) | zod.dev |
+| @supabase/supabase-js, @supabase/ssr | Database client, SSR cookie auth, session handling (`lib/supabase/`, `lib/auth/`, `middleware.ts`) | supabase.com/docs |
+| zod | Validation schemas for server inputs (`lib/validation/`) | zod.dev |
 | Vercel | Hosting/deployment | vercel.com/docs |
 | GitHub | Version control | — |
 

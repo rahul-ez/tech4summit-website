@@ -22,7 +22,11 @@ export const metadata: Metadata = {
   description: "Scalable Innovations for Next-Gen India — India's Biggest Hackathon.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
